@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{AF1E8070-9AB6-4746-8B7D-3C9215C8C95C}") = "MyService", "MyService.csproj", "{B51F05A1-ECBC-4130-BDBF-791D698C9AB8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AnyCPU = Debug|AnyCPU
+		Release|AnyCPU = Release|AnyCPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B51F05A1-ECBC-4130-BDBF-791D698C9AB8}.Debug|AnyCPU.ActiveCfg = Debug|AnyCPU
+		{B51F05A1-ECBC-4130-BDBF-791D698C9AB8}.Debug|AnyCPU.Build.0 = Debug|AnyCPU
+		{B51F05A1-ECBC-4130-BDBF-791D698C9AB8}.Release|AnyCPU.ActiveCfg = Release|AnyCPU
+		{B51F05A1-ECBC-4130-BDBF-791D698C9AB8}.Release|AnyCPU.Build.0 = Release|AnyCPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
