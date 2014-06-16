@@ -6,6 +6,7 @@ using System.Threading;
 
 namespace MyService
 {
+    [GlobalExceptionHandlerBehaviour(typeof(GlobalExceptionHandler))]
 	public class HelloService : IHelloService
 	{
 		public HelloService()
@@ -15,7 +16,14 @@ namespace MyService
 		//[PrincipalPermission(SecurityAction.Demand, Name="domain\\user")]
 		public string SayHello(string name)
 		{
+            Thread.Sleep(3000);
 			return string.Format("hello {0}!", Thread.CurrentPrincipal.Identity.Name);
 		}
+
+        public void ThrowError()
+        {
+            Thread.Sleep(3000);
+            throw new ApplicationException("on purpose!");
+        }
 	}
 }

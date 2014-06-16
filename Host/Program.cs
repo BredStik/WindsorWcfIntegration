@@ -26,14 +26,12 @@ namespace Host
             windsorContainer.Register(
                 Component.For<IConsoleService>().ImplementedBy<ConsoleService>().AsWcfService(new DefaultServiceModel(WcfEndpoint.BoundTo(new NetTcpBinding()).At("net.tcp://localhost:9101/console"))),
                 Component.For<IHelloService>().ImplementedBy<HelloService>().AsWcfService(new DefaultServiceModel(WcfEndpoint.BoundTo(new NetTcpBinding()).At("net.tcp://localhost:9101/hello")))
-                
-
                 );
 
             var hostFactory = new DefaultServiceHostFactory(windsorContainer.Kernel);
-            var helloHost = hostFactory.CreateServiceHost<IHelloService>();
-            
+            var helloHost = hostFactory.CreateServiceHost<IHelloService>();            
             var consoleHost = hostFactory.CreateServiceHost<IConsoleService>();
+
 			try
 			{
 				Console.ReadLine();

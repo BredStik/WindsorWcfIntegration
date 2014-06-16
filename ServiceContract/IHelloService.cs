@@ -8,5 +8,8 @@ namespace MyServiceContract
 	{
 		[OperationContract]
 		string SayHello(string name);
+
+        [OperationContract]
+        void ThrowError();
 	}
 }
