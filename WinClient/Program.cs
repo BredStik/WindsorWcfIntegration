@@ -42,6 +42,8 @@ namespace WinClient
                 {
                     container.Release(form);
                 }
+
+                container.Dispose();
             }
         }
 

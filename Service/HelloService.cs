@@ -2,11 +2,12 @@ using MyServiceContract;
 using System;
 using System.Security.Permissions;
 using System.Security.Principal;
+using System.ServiceModel;
 using System.Threading;
 
 namespace MyService
 {
-    [GlobalExceptionHandlerBehaviour(typeof(GlobalExceptionHandler))]
+    //[GlobalExceptionHandlerBehaviour(typeof(GlobalExceptionHandler))]
 	public class HelloService : IHelloService
 	{
 		public HelloService()
@@ -20,6 +21,7 @@ namespace MyService
 			return string.Format("hello {0}!", Thread.CurrentPrincipal.Identity.Name);
 		}
 
+        [FaultContract(typeof(ApplicationException))]
         public void ThrowError()
         {
             Thread.Sleep(3000);
