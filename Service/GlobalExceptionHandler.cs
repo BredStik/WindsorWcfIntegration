@@ -22,12 +22,21 @@ namespace MyService
 
         public void ProvideFault(Exception ex, MessageVersion version, ref Message msg)
         {
+            //var genericFaultException = typeof(FaultException<>).MakeGenericType(ex.GetType());
+            //var customFault = Activator.CreateInstance(genericFaultException, ex) as FaultException;
+            var customFault = new FaultException<ApplicationException>((ApplicationException)ex, "no reason");
+            
             var fault = new FaultException("An unexpected exception occured") { Source = ex.ToString() };
 
-            var messageFault = fault.CreateMessageFault();
-            msg = Message.CreateMessage(version, messageFault, fault.Action);
+            var messageFault = customFault.CreateMessageFault();
+            msg = Message.CreateMessage(version, messageFault, customFault.Action);
         }
 
         #endregion
+    }
+
+    public class Test
+    {
+        public string Name { get; set; }
     }
 }

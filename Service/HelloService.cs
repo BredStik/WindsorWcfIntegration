@@ -7,7 +7,6 @@ using System.Threading;
 
 namespace MyService
 {
-    [GlobalExceptionHandlerBehaviour(typeof(GlobalExceptionHandler))]
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.PerCall)] 
 	public class HelloService : IHelloService
 	{
@@ -21,7 +20,7 @@ namespace MyService
             Thread.Sleep(3000);
 			return string.Format("hello {0}!", Thread.CurrentPrincipal.Identity.Name);
 		}
-
+		
         public void ThrowError()
         {
             Thread.Sleep(3000);

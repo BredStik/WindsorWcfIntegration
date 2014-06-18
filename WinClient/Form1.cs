@@ -48,7 +48,9 @@ namespace WinClient
 
         private async void button3_Click(object sender, EventArgs e)
         {
+            button3.Enabled = false;
             await AsyncErrorHandling(CallWcfAsync(_helloService, x => x.ThrowError()));
+            button3.Enabled = true;
         }
 
         private async Task AsyncErrorHandling(Task task, Action<Exception> onException = null)
