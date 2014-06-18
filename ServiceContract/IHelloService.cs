@@ -11,5 +11,8 @@ namespace MyServiceContract
 
         [OperationContract]
         void ThrowError();
+
+        [OperationContract]
+        string RandomLength();
 	}
 }

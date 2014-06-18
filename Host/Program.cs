@@ -9,6 +9,7 @@ using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 using Host;
+using System.ServiceModel.Description;
 
 namespace Host
 {
@@ -22,10 +23,17 @@ namespace Host
 
 		public static void Main()
 		{
+            var throttlingBehavior = new ServiceThrottlingBehavior { MaxConcurrentCalls = Environment.ProcessorCount * 16, MaxConcurrentSessions = (Environment.ProcessorCount * 16) + (Environment.ProcessorCount * 100), MaxConcurrentInstances = Environment.ProcessorCount * 100 };
+            
 			var windsorContainer = new WindsorContainer().AddFacility<WcfFacility>();
             windsorContainer.Register(
+                Component.For<LoggingCallContextInitializer>(),
+                Component.For<LoggingBehavior>(),
                 Component.For<IConsoleService>().ImplementedBy<ConsoleService>().AsWcfService(new DefaultServiceModel(WcfEndpoint.BoundTo(new NetTcpBinding()).At("net.tcp://localhost:9101/console"))),
-                Component.For<IHelloService>().ImplementedBy<HelloService>().AsWcfService(new DefaultServiceModel(WcfEndpoint.BoundTo(new NetTcpBinding()).At("net.tcp://localhost:9101/hello")))
+                Component.For<IHelloService>()
+                    .ImplementedBy<HelloService>()
+                    .AsWcfService(
+                        new DefaultServiceModel(WcfEndpoint.BoundTo(new NetTcpBinding()).At("net.tcp://localhost:9101/hello")).AddExtensions(throttlingBehavior))
                 );
 
             var hostFactory = new DefaultServiceHostFactory(windsorContainer.Kernel);

@@ -42,7 +42,6 @@
       <AutoGen>false</AutoGen>
       <DesignTimeSharedInput>false</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="ServiceBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ServiceContract\MyServiceContract.csproj">

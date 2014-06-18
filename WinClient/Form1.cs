@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace WinClient
 {
@@ -70,6 +71,25 @@ namespace WinClient
         private void OnError(Exception exc)
         {
             MessageBox.Show(exc.Message, "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var tasks = new List<Task<string>>();
+
+            for (int i = 0; i < 400; i++)
+            {
+                tasks.Add(CallWcfAsync(_helloService, x => x.RandomLength()));
+            }
+
+            Task.WaitAll(tasks.ToArray());
+
+            foreach (var task in tasks)
+            {
+                Debug.WriteLine(task.Result);
+            }
+
+            MessageBox.Show("done");
         }
     }
 }
