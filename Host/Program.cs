@@ -25,7 +25,8 @@ namespace Host
 
 		public static void Main()
 		{
-            var helloServiceModel = new DefaultServiceModel(WcfEndpoint.BoundTo(new NetTcpBinding()).At("net.tcp://localhost:9101/hello")).AddExtensions(new GlobalExceptionHandlerBehaviour(typeof(GlobalExceptionHandler)));
+            var helloServiceModel = new DefaultServiceModel(WcfEndpoint.BoundTo(new NetTcpBinding()).At("net.tcp://localhost:9101/hello"));//.AddExtensions(new GlobalExceptionHandlerBehaviour(typeof(GlobalExceptionHandler)));
+
             helloServiceModel.OnCreated(host => {
                 host.Authorization.PrincipalPermissionMode = PrincipalPermissionMode.Custom;
                 host.Authorization.ExternalAuthorizationPolicies = new System.Collections.ObjectModel.ReadOnlyCollection<System.IdentityModel.Policy.IAuthorizationPolicy>(new List<IAuthorizationPolicy>() { new CustomAuthorizationPolicy() });

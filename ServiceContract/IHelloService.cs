@@ -10,6 +10,7 @@ namespace MyServiceContract
 		string SayHello(string name);
 
         [OperationContract]
+        [FaultContract(typeof(Exception))]
         void ThrowError();
 	}
 }

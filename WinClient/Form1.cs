@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.ServiceModel;
 
 namespace WinClient
 {
@@ -49,6 +50,7 @@ namespace WinClient
         {
             button3.Enabled = false;
             await AsyncErrorHandling(CallWcfAsync(_helloService, x => x.ThrowError()));
+            //_helloService.ThrowError();
             button3.Enabled = true;
         }
 
@@ -62,6 +64,11 @@ namespace WinClient
             try
             {
                 await task;
+            }
+            
+            catch (FaultException<Exception> exc)
+            {
+                onException.Invoke(exc);
             }
             catch (Exception exc)
             {

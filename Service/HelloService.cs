@@ -21,11 +21,11 @@ namespace MyService
 			return string.Format("hello {0}!", Thread.CurrentPrincipal.Identity.Name);
 		}
 
-        [FaultContract(typeof(ApplicationException))]
+        
         public void ThrowError()
         {
             Thread.Sleep(3000);
-            throw new ApplicationException("on purpose!");
+            throw new FaultException<Exception>(new Exception("on purpose!"));
         }
 	}
 }

@@ -22,6 +22,9 @@ namespace MyService
 
         public void ProvideFault(Exception ex, MessageVersion version, ref Message msg)
         {
+            if (msg.IsFault)
+                return;
+
             //var genericFaultException = typeof(FaultException<>).MakeGenericType(ex.GetType());
             //var customFault = Activator.CreateInstance(genericFaultException, ex) as FaultException;
             var customFault = new FaultException<ApplicationException>((ApplicationException)ex, "no reason");
