@@ -25,18 +25,28 @@ namespace Host
 
 		public static void Main()
 		{
+<<<<<<< HEAD
             var helloServiceModel = new DefaultServiceModel(WcfEndpoint.BoundTo(new NetTcpBinding()).At("net.tcp://localhost:9101/hello"));//.AddExtensions(new GlobalExceptionHandlerBehaviour(typeof(GlobalExceptionHandler)));
 
+=======
+            var throttlingBehavior = new ServiceThrottlingBehavior { MaxConcurrentCalls = Environment.ProcessorCount * 16, MaxConcurrentSessions = (Environment.ProcessorCount * 16) + (Environment.ProcessorCount * 100), MaxConcurrentInstances = Environment.ProcessorCount * 100 };
+            
+            var helloServiceModel = new DefaultServiceModel(WcfEndpoint.BoundTo(new NetTcpBinding()).At("net.tcp://localhost:9101/hello")).AddExtensions(new GlobalExceptionHandlerBehaviour(typeof(GlobalExceptionHandler)), throttlingBehavior );
+>>>>>>> origin/master
             helloServiceModel.OnCreated(host => {
                 host.Authorization.PrincipalPermissionMode = PrincipalPermissionMode.Custom;
                 host.Authorization.ExternalAuthorizationPolicies = new System.Collections.ObjectModel.ReadOnlyCollection<System.IdentityModel.Policy.IAuthorizationPolicy>(new List<IAuthorizationPolicy>() { new CustomAuthorizationPolicy() });
             });
 
 
+
 			var windsorContainer = new WindsorContainer().AddFacility<WcfFacility>();
             windsorContainer.Register(
+                Component.For<LoggingCallContextInitializer>(),
+                Component.For<LoggingBehavior>(),
                 Component.For<IConsoleService>().ImplementedBy<ConsoleService>().AsWcfService(new DefaultServiceModel(WcfEndpoint.BoundTo(new NetTcpBinding()).At("net.tcp://localhost:9101/console"))),
                 Component.For<IHelloService>().ImplementedBy<HelloService>().AsWcfService(helloServiceModel)
+
                 );
 
             var hostFactory = new DefaultServiceHostFactory(windsorContainer.Kernel);

@@ -12,5 +12,8 @@ namespace MyServiceContract
         [OperationContract]
         [FaultContract(typeof(Exception))]
         void ThrowError();
+
+        [OperationContract]
+        string RandomLength();
 	}
 }

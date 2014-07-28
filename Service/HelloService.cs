@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace MyService
 {
-    //[GlobalExceptionHandlerBehaviour(typeof(GlobalExceptionHandler))]
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.PerCall)] 
 	public class HelloService : IHelloService
 	{
 		public HelloService()
@@ -20,12 +20,25 @@ namespace MyService
             Thread.Sleep(3000);
 			return string.Format("hello {0}!", Thread.CurrentPrincipal.Identity.Name);
 		}
+<<<<<<< HEAD
 
         
+=======
+		
+>>>>>>> origin/master
         public void ThrowError()
         {
             Thread.Sleep(3000);
             throw new FaultException<Exception>(new Exception("on purpose!"));
+        }
+
+        public string RandomLength()
+        {
+            var rnd = new Random();
+            var sleepTime = rnd.Next(2000, 10000);
+            Thread.Sleep(sleepTime);
+
+            return string.Format("Waited {0} milliseconds then returned.", sleepTime);
         }
 	}
 }

@@ -59,6 +59,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LoggingBehavior.cs" />
+    <Compile Include="LoggingCallContextInitializer.cs" />
     <Compile Include="CustomAuthorizationPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>false</AutoGen>
