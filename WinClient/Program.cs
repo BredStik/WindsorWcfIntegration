@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.ServiceModel;
+using System.ServiceModel.Description;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -51,11 +52,36 @@ namespace WinClient
         {
             var container = new WindsorContainer();
             container.Kernel.AddFacility<WcfFacility>();
+
+            var helloClient = new DefaultClientModel
+                                   {
+                                       Endpoint = WcfEndpoint.BoundTo(new NetTcpBinding())
+                                           .At("net.tcp://localhost:9101/hello").AddExtensions(new SharedTypeResolver())
+                                   };
+
+            helloClient.OnChannelCreated((factory, channel) => {
+
+                //var od = factory.Endpoint.Contract.Operations.Find("Handle");
+
+                //var serializerBehavior = od.Behaviors.Find<DataContractSerializerOperationBehavior>();
+
+                //if (serializerBehavior == null)
+                //{
+                //    serializerBehavior = new DataContractSerializerOperationBehavior(od);
+                //    od.Behaviors.Add(serializerBehavior);
+                //}
+
+                //serializerBehavior.DataContractResolver = new SharedTypeResolver();
+            });
+
+
             container.Register(Component.For<IHelloService>()
+                                   .AsWcfClient(helloClient));
+            container.Register(Component.For<IRequestHandlerService>()
                                    .AsWcfClient(new DefaultClientModel
                                    {
                                        Endpoint = WcfEndpoint.BoundTo(new NetTcpBinding())
-                                           .At("net.tcp://localhost:9101/hello")
+                                           .At("net.tcp://localhost:9101/requestHandler")
                                    }));
             container.Register(Classes.FromThisAssembly().BasedOn(typeof(Form)).LifestyleTransient());
             return container;

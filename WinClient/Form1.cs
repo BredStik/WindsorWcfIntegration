@@ -9,21 +9,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-<<<<<<< HEAD
 using System.ServiceModel;
-=======
 using System.Diagnostics;
->>>>>>> origin/master
+using Newtonsoft.Json;
 
 namespace WinClient
 {
     public partial class Form1 : Form
     {
         private readonly IHelloService _helloService;
+        private readonly IRequestHandlerService _requestHandlerService;
 
-        public Form1(IHelloService helloService)
+        public Form1(IHelloService helloService, IRequestHandlerService requestHandlerService)
         {
             _helloService = helloService;
+            _requestHandlerService = requestHandlerService;
             InitializeComponent();
         }
 
@@ -35,11 +35,12 @@ namespace WinClient
         private async void button2_Click(object sender, EventArgs e)
         {
             button2.Enabled = false;
-            var result = await CallWcfAsync(_helloService, x => x.SayHello("mathieu"));
+            var result = await CallWcfAsync(_helloService, x => x.SayHello("mathieu"));//, x => x.SayHello("mathieu"));
             label1.Text = result;
             button2.Enabled = true;
         }
 
+        //
         private Task<TResult> CallWcfAsync<TService, TResult>(TService service, Func<TService, TResult> call)
         {
             return Task<TResult>.Factory.FromAsync(service.BeginWcfCall(call), ar => service.EndWcfCall<TResult>(ar));
@@ -102,6 +103,30 @@ namespace WinClient
             }
 
             MessageBox.Show("done");
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var helloResponse = SendHelloRequest<MyResponse>(new MyRequest { Parameter = "asd" });
+
+            var response = SendRequest<MyRequest, MyResponse>(new MyRequest { Parameter = "test" });
+            label1.Text = response.Message;
+        }
+
+        private TResponse SendHelloRequest<TResponse>(IRequest<TResponse> request) where TResponse : class
+        {
+            return _helloService.Handle(request) as TResponse;
+
+        }
+
+        private TResponse SendRequest<TRequest, TResponse>(TRequest request)
+        {
+            var requestType = string.Format("{0}, {1}", typeof(TRequest).FullName, typeof(TRequest).Assembly.GetName().Name);
+
+            var serializedResponse = _requestHandlerService.Handle(JsonConvert.SerializeObject(request), requestType);
+
+            return JsonConvert.DeserializeObject<TResponse>(serializedResponse);
+
         }
     }
 }
