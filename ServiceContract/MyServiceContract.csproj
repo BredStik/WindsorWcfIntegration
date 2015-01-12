@@ -42,6 +42,7 @@
     <Compile Include="IResponse.cs" />
     <Compile Include="MyRequest.cs" />
     <Compile Include="MyResponse.cs" />
+    <Compile Include="OtherComplexObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>false</AutoGen>
       <DesignTimeSharedInput>false</DesignTimeSharedInput>

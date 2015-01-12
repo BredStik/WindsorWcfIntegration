@@ -44,6 +44,11 @@ namespace MyService
             var requestInterfaceType = request.GetType().GetInterfaces().FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IRequest<>));
             var responseType = requestInterfaceType.GetGenericArguments().First();
 
+            if(request is IRequest<MyResponse>)
+            {
+                return new MyResponse { Message = "hello", Other = new OtherComplexObject { Id = 1, Date = DateTime.Now } };
+            }
+
             return Activator.CreateInstance(responseType);
         }
 

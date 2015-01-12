@@ -27,8 +27,15 @@ namespace MyServiceContract
 
     internal class KnownTypesProvider
     {
+        private static Type[] _knownTypes = null;
+
         public static IEnumerable<Type> GetKnownTypes(ICustomAttributeProvider provider)
         {
+            if (_knownTypes != null)
+            {
+                return _knownTypes;
+            }
+
             var contractAssembly = typeof(IRequest<>).Assembly;
 
             var requestTypes = (
@@ -41,7 +48,9 @@ namespace MyServiceContract
                 from requestType in requestTypes
                 select GetRequestResultType(requestType);
 
-            return requestTypes.Union(resultTypes).ToArray();
+            _knownTypes = requestTypes.Union(resultTypes).ToArray();
+
+            return _knownTypes;
         }
 
         private static bool TypeIsRequestType(Type type)
